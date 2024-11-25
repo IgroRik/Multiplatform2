@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encryption and Decryption</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Encryption and Decryption</h1>
+    
+    <!-- Text and key for encoding/decoding -->
+    <label for="text">Enter text:</label>
+    <textarea id="text" rows="4" placeholder="Enter text to encode..."></textarea>
+    
+    <label for="key">Enter key (1-255):</label>
+    <input type="number" id="key" placeholder="Enter key for encoding/decoding..." />
+    
+    <button id="generateKey">Generate key</button>
+    <button id="encodeXOR">Encode XOR</button>
+    <button id="decodeXOR">Decode XOR</button>
+    
+    <!-- Add Caesar shift input field -->
+    <label for="caesarShift">Enter shift for Caesar:</label>
+    <input type="number" id="caesarShift" placeholder="Enter shift for Caesar" />
+    
+    <button id="encodeCaesar">Encode Caesar</button>
+    <button id="decodeCaesar">Decode Caesar</button>
+    <button id="encodeBase64">Encode Base64</button>
+    <button id="decodeBase64">Decode Base64</button>
+    
+    <h2>Result:</h2>
+    <textarea id="result" rows="4" readonly></textarea>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Get elements from the page
+    const textInput = document.getElementById('text');
+    const keyInput = document.getElementById('key');
+    const caesarShiftInput = document.getElementById('caesarShift'); // New element
+    const resultOutput = document.getElementById('result');
+
+    // Generate random key
+    document.getElementById('generateKey').addEventListener('click', () => {
+      const key = xorCipher.generateKey();
+      keyInput.value = key; // Generate random key
+    });
+
+    // XOR Encoding
+    document.getElementById('encodeXOR').addEventListener('click', () => {
+      const text = textInput.value;
+      const key = parseInt(keyInput.value, 10);
+
+      if (!xorCipher.isValidKey(key)) {
+        alert("Please enter a valid key (1-255).");
+        return;
+      }
+
+      const encodedText = xorCipher.encodeXOR(text, key);
+      resultOutput.value = encodedText; // Display encoding result
+    });
+
+    // XOR Decoding
+    document.getElementById('decodeXOR').addEventListener('click', () => {
+      const encodedText = textInput.value;
+      const key = parseInt(keyInput.value, 10);
+
+      if (!xorCipher.isValidKey(key)) {
+        alert("Please enter a valid key (1-255).");
+        return;
+      }
+
+      const decodedText = xorCipher.decodeXOR(encodedText, key);
+      resultOutput.value = decodedText; // Display decoding result
+    });
+
+    // Caesar Encoding
+    document.getElementById('encodeCaesar').addEventListener('click', () => {
+      const text = textInput.value;
+      const shift = parseInt(caesarShiftInput.value, 10); // Read the shift
+
+      if (isNaN(shift)) {
+        alert("Please enter a valid shift.");
+        return;
+      }
+
+      const encodedText = xorCipher.encodeCaesar(text, shift);
+      resultOutput.value = encodedText;
+    });
+
+    // Caesar Decoding
+    document.getElementById('decodeCaesar').addEventListener('click', () => {
+      const text = textInput.value;
+      const shift = parseInt(caesarShiftInput.value, 10); // Read the shift
+
+      if (isNaN(shift)) {
+        alert("Please enter a valid shift.");
+        return;
+      }
+
+      const decodedText = xorCipher.decodeCaesar(text, shift);
+      resultOutput.value = decodedText;
+    });
+
+    // Base64 Encoding
+    document.getElementById('encodeBase64').addEventListener('click', () => {
+      const text = textInput.value;
+      const encodedText = xorCipher.encodeBase64(text);
+      resultOutput.value = encodedText;
+    });
+
+    // Base64 Decoding
+    document.getElementById('decodeBase64').addEventListener('click', () => {
+      const text = textInput.value;
+      const decodedText = xorCipher.decodeBase64(text);
+      resultOutput.value = decodedText;
+    });
+  </script>
+</body>
+</html>
